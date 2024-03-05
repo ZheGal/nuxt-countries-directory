@@ -11,7 +11,7 @@ export default defineNuxtConfig({
   modules: ["@pinia/nuxt"],
   runtimeConfig: {
     public: {
-      apiEndpoint: process.env.API_ENDPOINT,
+      apiBase: process.env.API_BASE,
     },
   },
 });
