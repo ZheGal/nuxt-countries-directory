@@ -8,4 +8,10 @@ export default defineNuxtConfig({
       autoprefixer: {},
     },
   },
+  modules: ["@pinia/nuxt"],
+  runtimeConfig: {
+    public: {
+      apiEndpoint: process.env.API_ENDPOINT,
+    },
+  },
 });
