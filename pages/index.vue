@@ -1,3 +1,3 @@
 <template>
-  <div>Countries List</div>
+  <div class="font-bold">Countries List</div>
 </template>

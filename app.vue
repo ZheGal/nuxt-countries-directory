@@ -1,3 +1,5 @@
 <template>
-  <div>TEST</div>
+  <nuxt-layout>
+    <nuxt-page />
+  </nuxt-layout>
 </template>
