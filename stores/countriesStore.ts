@@ -1,13 +1,11 @@
 export const useCountriesStore = defineStore("countries", () => {
-  const {
-    public: { apiEndpoint: baseUrl },
-  } = useRuntimeConfig();
+  const api = useApi();
 
   const countries = ref([]);
   const loading = ref<boolean>(false);
 
   async function getCountries() {
-    const url = `${baseUrl}all`;
+    const { data } = await api.fetch("all");
   }
 
   function resetState() {}
