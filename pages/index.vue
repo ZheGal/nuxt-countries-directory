@@ -1,6 +1,8 @@
 <template>
-  <div class="font-bold">Countries List</div>
-  <div>{{ store.countries }}</div>
+  <template v-if="store.loading">Loading...</template>
+  <template v-else>
+    <country-list :countries="store.filteredCountries" />
+  </template>
 </template>
 
 <script setup lang="ts">
