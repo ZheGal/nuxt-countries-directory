@@ -60,14 +60,19 @@ watch(
         query: newSearch ? { search: newSearch } : undefined,
       });
     }
+    setTitle();
   }
 );
 
-useHead({
-  title: `${
-    store.search ? `Search: "${store.search}"` : `Catalog`
-  } - Countries Directory`,
-});
+function setTitle() {
+  useHead({
+    title: `${
+      store.search ? `Search: "${store.search}"` : `Catalog`
+    } - Countries Directory`,
+  });
+}
+
+setTitle();
 </script>
 
 <style lang="scss" scoped>
