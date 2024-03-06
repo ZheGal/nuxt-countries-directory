@@ -11,17 +11,19 @@ export const useCountriesStore = defineStore('countries', () => {
   const loading = ref<boolean>(false);
 
   const filteredCountries = computed(() =>
-    countries.value.filter((country) => {
-      const commonName = country.name.common.toLowerCase();
-      const officialName = country.name.official.toLowerCase();
-      const cca3 = country.cca3.toLowerCase();
-      const searchLower = search.value.toLowerCase();
-      return (
-        commonName.includes(searchLower) ||
-        officialName.includes(searchLower) ||
-        cca3.includes(searchLower)
-      );
-    })
+    countries.value.length
+      ? countries.value.filter((country) => {
+          const commonName = country.name.common.toLowerCase();
+          const officialName = country.name.official.toLowerCase();
+          const cca3 = country.cca3.toLowerCase();
+          const searchLower = search.value.toLowerCase();
+          return (
+            commonName.includes(searchLower) ||
+            officialName.includes(searchLower) ||
+            cca3.includes(searchLower)
+          );
+        })
+      : []
   );
 
   async function getCountries() {
