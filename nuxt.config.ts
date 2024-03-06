@@ -8,7 +8,7 @@ export default defineNuxtConfig({
       autoprefixer: {},
     },
   },
-  modules: ["@pinia/nuxt"],
+  modules: ["@pinia/nuxt", "nuxt-icon"],
   runtimeConfig: {
     public: {
       apiBase: process.env.API_BASE,
