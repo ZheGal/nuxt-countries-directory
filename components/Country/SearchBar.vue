@@ -1,5 +1,5 @@
 <template>
-  <form class="search-bar">
+  <form class="search-bar" @submit.prevent="handleSubmit">
     <button type="submit">
       <Icon name="uil:search" color="white" />
     </button>
@@ -13,6 +13,15 @@
 
 <script setup lang="ts">
 const store = useCountriesStore();
+const router = useRouter();
+
+function handleSubmit() {
+  console.log(store.search);
+  router.push({
+    name: 'index',
+    query: store.search ? { search: store.search } : undefined,
+  });
+}
 </script>
 
 <style lang="scss" scoped>

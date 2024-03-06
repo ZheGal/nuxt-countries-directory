@@ -9,9 +9,9 @@
 
 <style lang="scss" scoped>
 .layout {
-  @apply w-full flex flex-col items-center gap-4;
+  @apply w-full min-h-screen flex flex-col items-center gap-4;
 }
 .main-container {
-  @apply container;
+  @apply container pb-8 flex-1 flex items-center justify-center;
 }
 </style>

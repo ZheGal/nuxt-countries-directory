@@ -1,8 +1,9 @@
 <template>
   <header class="header">
     <div class="header-left">
-      <h1 class="header-title">Countries Directory</h1>
-      <h2>Countries Catalog</h2>
+      <h1 class="header-title">
+        <nuxt-link :to="{ name: 'index' }">Countries Directory</nuxt-link>
+      </h1>
     </div>
     <div class="header-right">
       <country-search-bar />

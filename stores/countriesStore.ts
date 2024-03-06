@@ -1,11 +1,14 @@
-export const useCountriesStore = defineStore("countries", () => {
-  const api = useApi();
+import type { Country } from '~/types';
 
-  const countries = ref<any[]>([]);
-  const search = ref<string>("");
+export const useCountriesStore = defineStore('countries', () => {
+  const runtime = useRuntimeConfig();
+  const apiBase = runtime.public.apiBase;
+
+  const countries = ref<Country[]>([]);
+  const country = ref<Country>();
+  const search = ref<string>('');
+  const fields = ref<string[]>([]);
   const loading = ref<boolean>(false);
-  const router = useRouter();
-  const { path } = router.currentRoute.value;
 
   const filteredCountries = computed(() =>
     countries.value.filter((country) => {
@@ -22,42 +25,43 @@ export const useCountriesStore = defineStore("countries", () => {
   );
 
   async function getCountries() {
-    resetState();
+    countries.value = [];
     loading.value = true;
-    const response = await api.fetch("all");
+    const response = await $fetch(`${apiBase}all`, {
+      method: 'GET',
+      query: {
+        fields: fields.value,
+      },
+    });
     if (response) {
-      countries.value = response as any;
+      countries.value = response as Country[];
     }
     loading.value = false;
   }
 
-  function resetState() {
-    countries.value = [];
+  async function getCountry(code: string) {
+    country.value = undefined;
+    loading.value = true;
+    const response = await $fetch(`${apiBase}alpha/${code}`, {
+      method: 'GET',
+      query: {
+        fields: fields.value,
+      },
+    });
+    if (response) {
+      country.value = response as Country;
+    }
+    loading.value = false;
   }
 
-  onMounted(() => {
-    const { search: querySearch } = router.currentRoute.value.query;
-    if (querySearch) {
-      search.value = String(querySearch);
-    }
-  });
-
-  watch(
-    () => search.value,
-    () => {
-      router.push({
-        path,
-        query: search.value ? { search: search.value } : undefined,
-      });
-    }
-  );
-
   return {
-    countries,
     loading,
+    countries,
+    country,
+    fields,
     search,
     filteredCountries,
     getCountries,
-    resetState,
+    getCountry,
   };
 });

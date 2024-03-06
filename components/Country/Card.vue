@@ -1,18 +1,14 @@
 <template>
   <div class="country-card">
-    <img
-      :src="country.flags.svg"
-      :alt="country.flags.alt"
-      class="country-card__flag"
-    />
+    <div class="country-card__flag">
+      <img :src="country.flags.svg" :alt="country.flags.alt" />
+    </div>
     <div class="country-card__information">
       <div class="country-card__name">
-        <span class="font-bold">{{ country.name.official }}</span>
-        <span v-if="country.name.official !== country.name.common">
-          ({{ country.name.common }})
-        </span>
+        <span class="font-bold">{{ country.name.common }}</span>
       </div>
       <div class="country-card__information-rest">
+        <div>Official Name: {{ country.name.official }}</div>
         <div>Population: {{ country.population.toLocaleString() }}</div>
         <div>CCA3 Code: {{ country.cca3 }}</div>
       </div>
@@ -28,11 +24,12 @@ defineProps<{
 
 <style scoped lang="scss">
 .country-card {
-  @apply flex flex-row items-center gap-4;
-  @apply p-2 px-4 border rounded-md  bg-white;
-  @apply shadow-lg;
+  @apply h-full w-full;
+  @apply flex flex-row items-center gap-4 shadow-lg;
+  @apply p-2 px-4 border rounded-md bg-white;
+  @apply hover:scale-105 duration-100 hover:shadow-2xl;
   &__flag {
-    @apply w-[80px] shadow-lg;
+    @apply w-[80px] h-[50px] flex;
   }
   &__information {
     @apply flex flex-col;
