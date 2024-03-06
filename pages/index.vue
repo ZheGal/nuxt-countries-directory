@@ -1,8 +1,8 @@
 <template>
-  <template v-if="store.countries.length && !store.loading">
-    <div class="flex flex-col gap-4 w-full self-start">
-      <h3 class="font-bold text-2xl">Countries Catalog</h3>
-      <ul class="country-list" v-if="store.filteredCountries.length">
+  <div class="flex flex-col gap-4 w-full self-start">
+    <h3 class="font-bold text-2xl">Countries Catalog</h3>
+    <template v-if="store.filteredCountries.length">
+      <ul class="country-list">
         <li
           v-for="country in store.filteredCountries"
           :key="country.name.common"
@@ -17,15 +17,17 @@
           </nuxt-link>
         </li>
       </ul>
-      <div v-else class="country-list__empty">
+    </template>
+    <template v-else>
+      <div class="flex items-center justify-center m-8" v-if="store.loading">
+        <loader />
+      </div>
+      <div class="country-list__empty" v-if="!store.loading">
         <h3>Countries not Found</h3>
         <button @click="store.search = ''">Reset Filter</button>
       </div>
-    </div>
-  </template>
-  <template v-else>
-    <loader />
-  </template>
+    </template>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -33,26 +35,39 @@ const store = useCountriesStore();
 const router = useRouter();
 const route = useRoute();
 
-onMounted(() => {
-  store.loading = true;
-  const { search: querySearch } = route.query;
-  if (querySearch) {
-    store.search = String(querySearch);
+const { search: querySearch } = route.query;
+if (querySearch) {
+  store.search = String(querySearch);
+}
+store.fields = ['name', 'flags', 'population', 'cca3'];
+store.getCountries();
+
+watch(
+  () => route.query.search,
+  (newQuery) => {
+    if (store.search !== String(newQuery)) {
+      store.search = newQuery ? String(newQuery) : '';
+    }
   }
-  store.fields = ['name', 'flags', 'population', 'cca3'];
-  store.getCountries();
-});
+);
 
 watch(
   () => store.search,
-  () => {
-    console.log('test');
-    router.push({
-      path: route.path,
-      query: store.search ? { search: store.search } : undefined,
-    });
+  (newSearch) => {
+    if (newSearch !== route.query.search) {
+      router.push({
+        path: route.path,
+        query: newSearch ? { search: newSearch } : undefined,
+      });
+    }
   }
 );
+
+useHead({
+  title: `${
+    store.search ? `Search: "${store.search}"` : `Catalog`
+  } - Countries Directory`,
+});
 </script>
 
 <style lang="scss" scoped>

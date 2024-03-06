@@ -27,14 +27,16 @@ export const useCountriesStore = defineStore('countries', () => {
   async function getCountries() {
     countries.value = [];
     loading.value = true;
-    const response = await $fetch(`${apiBase}all`, {
-      method: 'GET',
-      query: {
-        fields: fields.value,
-      },
-    });
-    if (response) {
-      countries.value = response as Country[];
+    const { data } = await useAsyncData('countries', () =>
+      $fetch(`${apiBase}all`, {
+        method: 'GET',
+        query: {
+          fields: fields.value,
+        },
+      })
+    );
+    if (data) {
+      countries.value = data.value as Country[];
     }
     loading.value = false;
   }
@@ -42,14 +44,16 @@ export const useCountriesStore = defineStore('countries', () => {
   async function getCountry(code: string) {
     country.value = undefined;
     loading.value = true;
-    const response = await $fetch(`${apiBase}alpha/${code}`, {
-      method: 'GET',
-      query: {
-        fields: fields.value,
-      },
-    });
-    if (response) {
-      country.value = response as Country;
+    const { data } = await useAsyncData('country', () =>
+      $fetch(`${apiBase}alpha/${code}`, {
+        method: 'GET',
+        query: {
+          fields: fields.value,
+        },
+      })
+    );
+    if (data) {
+      country.value = data.value as Country;
     }
     loading.value = false;
   }
